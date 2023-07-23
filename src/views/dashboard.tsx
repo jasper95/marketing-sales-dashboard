@@ -10,8 +10,7 @@ import { totalByKey } from '@/lib/total-by-key'
 import {
   useQuery,
 } from '@tanstack/react-query'
-import { isWithinInterval } from 'date-fns/esm'
-import sub from 'date-fns/sub'
+import { endOfDay, isWithinInterval, sub } from 'date-fns/esm'
 import { useMemo, useState } from 'react'
 import { DateRange } from 'react-day-picker'
 
@@ -28,7 +27,7 @@ export default function Dashboard() {
         (res) => res.json(),
       ),
   })
-  const aggregatedData = useMemo(() => (data?.payload.results && date?.from && date?.to) ? aggregateByMonth(data?.payload.results.filter(e => isWithinInterval(new Date(e.date), { start: date.from!, end: date.to!})) || []) : [], [data, date])
+  const aggregatedData = useMemo(() => (data?.payload.results && date?.from && date?.to) ? aggregateByMonth(data?.payload.results.filter(e => isWithinInterval(new Date(e.date), { start: date.from!, end: endOfDay(date.to!)})) || []) : [], [data, date])
   const overViewData = useMemo(() => {
     const totalRevenue = totalByKey(aggregatedData, 'revenue')
     const totalProfit = totalByKey(aggregatedData, 'net_profit')
@@ -72,7 +71,7 @@ export default function Dashboard() {
         )
       },
     ]
-  }, [data, date])
+  }, [aggregatedData])
 
   return (
     <div className='p-8 space-y-4 min-w-screen min-h-screen'>
