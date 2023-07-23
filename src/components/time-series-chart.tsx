@@ -33,7 +33,7 @@ const CustomLegend: ContentType<ValueType, NameType> = (props) => {
 
   if(payload?.length) {
     return (
-      <ul className="flex items-center space-x-4 justify-center">
+      <ul className="flex flex-col sm:flex-row items-center sm:space-x-4 justify-center">
         {payload.map((entry, index) => (
           <li key={`item-${index}`} className="flex items-center space-x-2">
             <svg width="10" height="10">
